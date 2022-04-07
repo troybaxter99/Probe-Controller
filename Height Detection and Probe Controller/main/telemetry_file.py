@@ -47,7 +47,7 @@ def createFile(path):
     # If File Doesn't Exists
     if (not os.path.exists(file_path)): 
         with open(file_path, 'x') as log:
-            log.write("Time(HR:MM:SS), Time of Flight Sensor Distance (in), Probe Distance (in), Actuator Length (in)\n")        
+            log.write("Time(HR:MM:SS), Time of Flight Sensor Distance (in), Probe Distance (in), Expected Actuator Length (in), Actual Actuator Length (in)\n")        
         log.close()
 
 def logData(tof_dist, probe_dist, actuator_len):

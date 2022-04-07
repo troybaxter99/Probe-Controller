@@ -40,7 +40,7 @@ def in2mm(distance):
 # Calculate Duty Cycle
 def calculateDutyCycle(distance):
     distMM = in2mm(distance)
-    dc = distMM/MAX_LENGTH * 100 # Distance/Max distance * 100%
+    dc = distMM* 100 * 1023 # Distance/Max distance * 100%
     return dc
 
 def pwmOutput():
@@ -48,11 +48,11 @@ def pwmOutput():
     
     # 0 inches
     
-    for i in range (0,100,10):
+    for i in range (0,101,1):
         #dc = calculateDutyCycle(i)
         print(i, "inches\n")
         my_pwm.ChangeDutyCycle(i)
-        time.sleep(10) # Sleep for 10 seconds
+        time.sleep(0.1) # Sleep for 10 seconds
 
 
 init()

@@ -1,6 +1,7 @@
 # Imports
 import board
 import busio
+import digitalio
 import sys
 import time
 import tech_input as tech
@@ -17,6 +18,11 @@ def init_dist():
     global sensor
     
     tofExists = False
+    
+    # Set pin 7 to Digital High
+    xshut = digitalio.DigitalInOut(board.D4) # [XSHUT] (Pin 7)
+    xshut.direction = digitalio.Direction.OUTPUT
+    xshut.value = True
     
     # Create I2C and Sensor
     while (tofExists == False):
@@ -99,6 +105,7 @@ def error():
     
     time.sleep(0.2)
 
+init_dist()
 def main():
     rawAverage = average_distance()
     rawAverage_in = cm2in(rawAverage)
@@ -110,5 +117,5 @@ def main():
     print("\nCalibrated Range Average: {0} in".format(distance_in))
     print("Avg. Calibrated: {0} in". format(avg_cal_in))
 
-#if __name__ == "__main__":
-#    main()
+if __name__ == "__main__":
+    main()

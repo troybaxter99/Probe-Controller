@@ -167,9 +167,10 @@ def led_Status():
         stopLED.value = True # Turn on Red LED
         #print("System Inactive")
 
-'''
+
 init_tech()
 
+'''
 while True:
     extraction_Status()
     start_Status()

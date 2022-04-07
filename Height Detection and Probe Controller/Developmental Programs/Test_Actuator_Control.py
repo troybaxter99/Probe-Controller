@@ -1,13 +1,17 @@
 # Imports
 import RPi.GPIO as GPIO
 import time
+import sys
+
+sys.path.insert(1, "/home/pi/Height Detection and Probe Controller/actuonix-lac/actuonix_lac")
+import lac
 
 # Constants
 MAX_LENGTH = 196.75 # mm
 mm2in = 25.4
 
 # Pin and PWM Initialization
-actuatorPin = 16
+actuatorPin = 18
 button = 33
 
 buttonStatus = False
@@ -19,6 +23,8 @@ GPIO.setup(actuatorPin, GPIO.OUT)
     
 my_pwm = GPIO.PWM(actuatorPin, 1000) # PWM operates at 1 kHz
 my_pwm.start(0) # 0% Duty Cycle
+
+p16 = lac.LAC()
 
 # Imperial to Metric Conversion
 def in2mm(distance):
@@ -46,7 +52,7 @@ def buttonPress():
 
 def pwmOutput():
     if (buttonStatus == True & buttonChange == True):
-        dc = calculateDutyCycle(3) # 3 inches
+        dc = calculateDutyCycle(5.0) # 5 inches
         print("Duty Cycle: %.3f%%" % dc)
         my_pwm.ChangeDutyCycle(dc)
         
@@ -55,9 +61,21 @@ def pwmOutput():
         print("Duty Cycle: %.3f%%" % dc)
         my_pwm.ChangeDutyCycle(0)
 
+def actuatorPos():
+    if (buttonStatus == True & buttonChange == True):
+        position = round(3 * mm2in * 1023/ 196.75) # 3 inches
+        print("Position: %.3f%%" % position)
+        p16.set_position(position)
+        
+    elif (buttonChange == True):
+        position = 0 # 0 inches
+        print("Position: %.3f" % position)
+        p16.set_position(position)
+
 while True:
+    
     buttonPress()
-    pwmOutput()
+    actuatorPos()
     time.sleep(0.1)
 
 # my_pwm.ChangeDutyCycle(20)
