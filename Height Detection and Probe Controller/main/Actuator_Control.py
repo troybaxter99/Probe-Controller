@@ -92,22 +92,45 @@ def changeLACGains(proprotional_gain, derivative_gain):
 # This functions receives a distance in inches and sends the desired actuator position to the LAC
 def setActuatorPosition(distance):
     global p16
-    # Get distance in inches and convert to mm
-  
-    distance = in2mm(distance)
+    
+    actuatorLength = getActuatorLength(distance) # Returns in inches
+    actuatorLength = in2mm(actuatorLength) # Converts actuator length from inches to mm
     
     # Calculate value to be sent to the lac
-    lacValue = (distance*1023)/MAX_LENGTH
+    lacValue = (actuatorLength*1023)/MAX_LENGTH
     lacValue = round(lacValue)
     
     # Set actuator position
-    p16.set_position(lacValue
+    p16.set_position(lacValue)
 
 # This function returns the actual actuator position at the time it was called.
 def getActualActuatorPosition():
     global p16
     distance = p16.get_feedback()
     return mm2in(distance)
+
+'''
+Direct Actuator Position Functions
+    2 functions that eithe set the actuator to 0 inches or 3 inches depending upon whether the system is in:
+        Install/Extraction Mode or Ready Mode
+'''
+# This function sets the actuaor to 0 inchesfor install/extraction
+def setInstallPosition():
+    global p16
+    
+    # Completely retracts the actuator
+    p16.set_position(0)
+
+def setReadyPosition():
+    global p16
+    
+    actuatorLength = 3 # 3 inches
+    actuatorLength = in2mm(actuatorLength)
+    lacValue = (actuatorLength*1023)/MAX_LENGTH
+    lacValue = round(lacValue)
+    
+    # Set actuator position
+    p16.set_position(lacValue)
 '''
 Useful Functions for getting Actuator Length
 '''
@@ -119,8 +142,8 @@ def in2mm(distance):
 def metric2in(distance):
     return distance / mm2in
 
-# Get Actuator Length
-def getExpectedActuatorLength(height):
+# Get Actuator Length in inches
+def getActuatorLength(height):
     # Calculate Expected Actuator Length
     actuatorLen = height + ((CASE_LENGTH + INITIAL_ACTUATOR_LENGTH) - (EXPOSED_PROBE_LENGTH + IDEAL_PROBE_DISTANCE)) # A_e = d + ((C+I)-(e+L))
     
@@ -135,7 +158,7 @@ def getExpectedActuatorLength(height):
     return actuatorLen
 
 def getProbePosition(distance):
-    A_a = getActuatorLength(distance) # Actual Actuator Length
+    A_a = getActualActuatorLength(distance) # Actual Actuator Length
     A_e = distance + ((CASE_LENGTH + INITIAL_ACTUATOR_LENGTH) - (EXPOSED_PROBE_LENGTH + IDEAL_PROBE_DISTANCE)) # Expected Actuator Length
     
     delta = A_a - A_e # Difference between actual and expected
@@ -144,7 +167,6 @@ def getProbePosition(distance):
     
     # Return Probe Position
     return probe_pos
-
 
 def main():
     init()

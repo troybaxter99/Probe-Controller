@@ -47,7 +47,7 @@ def measure():
     global sensor
     
     dist = sensor.distance
-    #print("Reading: {0} cm".format(dist))
+    print("Reading: {0} cm".format(dist))
     
     # Return distance in cm
     return dist

@@ -10,8 +10,8 @@ def main():
     tech.init_tech()
     p16.setUSBmode()
     
-    # Set actuator position to 0
-    p16.setActuatorPosition(0)
+    # Set actuator position to 0 inches
+    p16.setInstallPosition()
     
     extraction = [None] * 2
     start = [None] * 2
@@ -44,19 +44,13 @@ def main():
              
             #print("Distance: %.2f in" % distCal)
             
-            # Set distance for actuator
-            if (distCal > 5.5):
-                p16.setActuatorPosition(5.5)
-            elif (distCal < 0.5):
-                p16.setActuatorPosition(0.5)
-            else:
-                p16.setActuatorPosition(distCal)
+            p16.setActuatorPosition(distCal)
             
             
             if (tech.usbExists == True):
                 # Add Data to Telemetry
                 probe_pos = p16.getProbePosition(distCal)
-                expected_actuator_len = p16.getExpectedActuatorLength(distCal)
+                expected_actuator_len = p16.getActuatorLength(distCal)
                 actual_actuator_len = p16.getActualActuatorLength()
                 
                 # Send calibrated distance measurement, probe position, expected actuator length,
@@ -66,11 +60,11 @@ def main():
         # Extraction Mode
         if(extraction[1] == True): # If change in extraction mode condition
             if(extraction[0] == True): # If Extraction Mode is enabled
-                p16.setActuatorPosition(0) # 0 inches
+                p16.setInstallPosition() # 0 inches
                 #print("Distance: 0 in")
                 
             else: # If Extraction Mode is not enabled
-                p16.setActuatorPosition(3) # 3 inches
+                p16.setReadyPosition() # 3 inches
                 #print("Distance: 3 in")
             
     '''
