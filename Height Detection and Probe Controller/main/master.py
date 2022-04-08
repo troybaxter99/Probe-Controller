@@ -51,7 +51,7 @@ def main():
                 # Add Data to Telemetry
                 probe_pos = p16.getProbePosition(distCal)
                 expected_actuator_len = p16.getActuatorLength(distCal)
-                actual_actuator_len = p16.getActualActuatorLength()
+                actual_actuator_len = p16.getActuatorLength()
                 
                 # Send calibrated distance measurement, probe position, expected actuator length,
                 # and actual actuator length to a .csv telemetry file
