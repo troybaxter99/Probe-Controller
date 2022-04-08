@@ -107,7 +107,7 @@ def setActuatorPosition(distance):
 def getActualActuatorPosition():
     global p16
     distance = p16.get_feedback()
-    return mm2in(distance)
+    return metric2in(distance)
 
 '''
 Direct Actuator Position Functions

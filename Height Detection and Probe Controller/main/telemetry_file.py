@@ -50,10 +50,10 @@ def createFile(path):
             log.write("Time(HR:MM:SS), Time of Flight Sensor Distance (in), Probe Distance (in), Expected Actuator Length (in), Actual Actuator Length (in)\n")        
         log.close()
 
-def logData(tof_dist, probe_dist, actuator_len):
+def logData(tof_dist, probe_dist, expected_actuator_len, actual_actuator_len):
     global file_path
     with open(file_path, 'a') as log:
-        log.write("{0}, {1}, {2}, {3}\n".format(strftime("%H:%M:%S"), str(tof_dist), str(probe_dist), str(actuator_len)))
+        log.write("{0}, {1}, {2}, {3}, {4}\n".format(strftime("%H:%M:%S"), str(tof_dist), str(probe_dist), str(expected_actuator_len), str(actual_actuator_len)))
         log.close()
 
 def ejectUSB():
