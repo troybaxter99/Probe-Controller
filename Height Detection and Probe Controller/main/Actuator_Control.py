@@ -34,7 +34,7 @@ PWM Mode Functions
 def setPWMmode():
     global actuatorPWM
     
-    # Setup Linear
+    # Setup Linear Actuator Controller PWM Control
     actuatorPWM = pwmio.PWMOut(board.D24, frequency = 1000, duty_cycle = 0) # Actuator PWM (Pin 18)
     
     actuatorPWM.duty_cycle = 0 # 0 inches
