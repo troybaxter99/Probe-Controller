@@ -6,6 +6,11 @@ import time
 
 import telemetry_file as telemetry
 
+# Import Audio
+import sys
+sys.path.insert(1, "/home/pi/Audio-Alert-System/Code")
+import audio
+
 'Global Variables'
 # Button Status
 statusExtract = True
@@ -37,14 +42,21 @@ startButton = digitalio.DigitalInOut(board.D6) # [Yellow Button] (Pin 31)
 extractionButton.direction = digitalio.Direction.INPUT
 startButton.direction = digitalio.Direction.INPUT
 
+# Instantiate techAudio as a global variable
+global techAudio
+
 # Initialization
 def init_tech():
-       
+    global techAudio
+    
     # Turn off start and idle LEDs. Turn on extraction and stop LEDs
     extractionLED.value = True
     startLED.value = False
     idleLED.value = False
     stopLED.value = True
+    
+    # Initialize techAudio and Setup Path to Audio File Location
+    techAudio = audio.AUDIO("/home/pi/Audio-Alert-System/Audio-Files/Tech-Interface-Audio/")
     
 # Extract/Install Probe Button
 def extraction_Status():
@@ -62,6 +74,10 @@ def extraction_Status():
         
             statusExtract = not statusExtract # Invert activation status
             extractionChange = True # change in activation status is true
+            
+            ''' Play Audio '''
+            techAudio.set_volume(100) # Set Volume to 50%
+            techAudio.play_audio("button_press.wav")
     
         else:
             extractionChange = False
@@ -75,6 +91,9 @@ def start_Status():
     # Check to see if actuator has been activated
     if (statusExtract == False):
         
+        '''
+        Entering or Leaving Auto Mode
+        '''
         # Check to see if start button has been pressed
         if (startButton.value == 1):
             
@@ -84,7 +103,24 @@ def start_Status():
             
             statusStart = not statusStart # invert statusStart
             startChange = True # True if there has been a change in start/stop status
-        
+            
+            ''' Play Audio '''
+            techAudio.set_volume(100) # Set Audio to 50%
+            
+            # Starting Up
+            if (statusStart):
+                techAudio.play_audio("button_press.wav")
+                                
+                time.sleep(0.1)
+                techAudio.play_audio("startup.wav")
+            
+            # Shutting Down
+            else:
+                techAudio.play_audio("button_press.wav")
+                                
+                time.sleep(0.2)
+                techAudio.play_audio("shutdown.wav")
+                
         else:
             startChange = False
         
@@ -151,6 +187,10 @@ def led_Status():
                 while(startButton.value):
                     pass
                 
+                ''' Audio '''
+                techAudio.set_volume(100) # Set volume to 50%
+                techAudio.play_audio("button_press.wav")
+                
                 # Set debugMode to false and turn on yellow LED
                 debugMode = False
                 idleLED.value = True
@@ -170,7 +210,7 @@ def led_Status():
 
 init_tech()
 
-'''
+
 while True:
     extraction_Status()
     start_Status()
@@ -185,4 +225,3 @@ while True:
         
     if (extractionChange == True):
         print("position:%.2f in" % posit)
-'''

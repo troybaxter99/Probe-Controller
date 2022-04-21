@@ -4,9 +4,9 @@ import pwmio
 import time
 import math
 import sys
-# import tech_input as tech
+import tech_input as tech
 
-sys.path.insert(1, "/home/pi/Height Detection and Probe Controller/actuonix-lac/actuonix_lac")
+sys.path.insert(1, "/home/pi/Probe-Controller/Height Detection and Probe Controller/actuonix-lac/actuonix_lac")
 import lac
 
 # Set Known Constants
@@ -169,9 +169,12 @@ def getProbePosition(distance):
     return probe_pos
 
 def main():
-    init()
+    tech.init_tech()
     while True:
         tech.extraction_Status()
         tech.led_Status()
         pwmOutput()
         time.sleep(0.1)
+        
+if __name__ == "__main__":
+    main()

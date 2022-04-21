@@ -1,5 +1,8 @@
-import lac
 import time
+import sys
+
+sys.path.insert(1, "/home/pi/Probe-Controller/Height Detection and Probe Controller/actuonix-lac/actuonix_lac")
+import lac
 
 p16 = lac.LAC()
 
