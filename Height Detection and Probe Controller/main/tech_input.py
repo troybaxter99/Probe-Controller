@@ -76,7 +76,7 @@ def extraction_Status():
             extractionChange = True # change in activation status is true
             
             ''' Play Audio '''
-            techAudio.set_volume(100) # Set Volume to 50%
+            techAudio.set_volume(15) # Set Volume to 15%
             techAudio.play_audio("button_press.wav")
     
         else:
@@ -105,7 +105,7 @@ def start_Status():
             startChange = True # True if there has been a change in start/stop status
             
             ''' Play Audio '''
-            techAudio.set_volume(100) # Set Audio to 50%
+            techAudio.set_volume(15) # Set Audio to 15%
             
             # Starting Up
             if (statusStart):
