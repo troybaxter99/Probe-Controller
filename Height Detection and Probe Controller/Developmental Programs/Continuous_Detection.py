@@ -52,7 +52,7 @@ def calibration_avg(dist):
     
     return calibrated
 
-'''
+
 while True:
     rawAverage = average_distance()
     rawAverage_in = cm2in(rawAverage)
@@ -65,4 +65,3 @@ while True:
     print("\nRaw Avereage: %.2f in (%.2f cm)" % (rawAverage_in, rawAverage))
     print("Calibrated: %.2f in (%.2f cm)" % (distance_in, distance_cm))
     print("Avg. Calibration: %.2f in (%.2f cm)" % (cal_avg_in, cal_avg_cm))
-'''
