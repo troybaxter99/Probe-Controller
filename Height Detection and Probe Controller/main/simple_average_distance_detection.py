@@ -105,7 +105,6 @@ def error():
     
     time.sleep(0.2)
 
-init_dist()
 def main():
     rawAverage = average_distance()
     rawAverage_in = cm2in(rawAverage)
@@ -118,4 +117,5 @@ def main():
     print("Avg. Calibrated: {0} in". format(avg_cal_in))
 
 if __name__ == "__main__":
+    init_dist()
     main()

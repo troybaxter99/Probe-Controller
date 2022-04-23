@@ -1,9 +1,8 @@
 # Imports
 import simple_average_distance_detection as hd
 import Actuator_Control as p16
-import tech_input as tech
+import old-tech_input as tech
 import telemetry_file as telemetry
-
 
 def main():
     # Initialization
@@ -17,16 +16,14 @@ def main():
     extraction = [None] * 2
     start = [None] * 2
     
-    state = "Install"
-    
     # Check Mode
     while True:
-        inputs = tech.button_press()
-        previousState = state
-        state = tech.set_state(inputs)
+        extraction = tech.extraction_Status() # Checks extraction mode status and sets extraction[] = [statusExtraction, extractionChange]
+        start = tech.start_Status() # Checks start mode status and sets start[] = [statusStart, startChange]
+        tech.led_Status()
         
-        # Auto Mode
-        if(state == "Auto"):
+        # Start Mode
+        if(start[0] == True):
 #             if(start[1] == True):
 #                 print("Entering Distance Detection Mode")
             
@@ -46,6 +43,7 @@ def main():
                     hd.error()
              
             #print("Distance: %.2f in" % distCal)
+            
             p16.setActuatorPosition(distCal)
             
             
@@ -58,15 +56,16 @@ def main():
                 # Send calibrated distance measurement, probe position, expected actuator length,
                 # and actual actuator length to a .csv telemetry file
                 telemetry.logData(distCal, probe_pos, expected_actuator_len, actual_actuator_len)
-        
+            
         # Extraction Mode
-        if(state == "Install" and (previousState != state)): # If change in extraction mode condition
-            p16.setInstallPosition() # 0 inches
-            #print("Distance: 0 in")
+        if(extraction[1] == True): # If change in extraction mode condition
+            if(extraction[0] == True): # If Extraction Mode is enabled
+                p16.setInstallPosition() # 0 inches
+                #print("Distance: 0 in")
                 
-        elif(state == "Ready" and (previousState != state)): # If Extraction Mode is not enabled
-            p16.setReadyPosition() # 3 inches
-            #print("Distance: 3 in")
+            else: # If Extraction Mode is not enabled
+                p16.setReadyPosition() # 3 inches
+                #print("Distance: 3 in")
             
     '''
     # Get Height Detection
@@ -78,4 +77,3 @@ def main():
     
 if __name__ == "__main__":
     main()
-

@@ -169,8 +169,9 @@ def getProbePosition(distance):
     # Return Probe Position
     return probe_pos
 
+'''
 def main():
-    tech.init_tech()
+    new_tech.init_tech()
     while True:
         tech.extraction_Status()
         tech.led_Status()
@@ -179,3 +180,4 @@ def main():
         
 if __name__ == "__main__":
     main()
+'''
