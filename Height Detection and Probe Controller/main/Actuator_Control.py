@@ -7,7 +7,9 @@ import sys
 import tech_input as tech
 
 sys.path.insert(1, "/home/pi/Probe-Controller/Height Detection and Probe Controller/actuonix-lac/actuonix_lac")
+sys.path.insert(2, "/home/pi/Audio-Alert-System/Code")
 import lac
+import audio
 
 # Set Known Constants
 CASE_LENGTH = 5 #in
@@ -22,8 +24,11 @@ PWM_FREQ = 65535
 
 actuatorPWM = None
 
-p16 = None 
+p16 = None
 
+# Instantiate audio object in order to read out a warning if LAC is not detected
+lacAudio = audio.AUDIO("/home/pi/Audio-Alert-System/Audio-Files/Alert-Audio/")
+lacAudio.set_espeak_gap(250) # 250 ms between each word
 '''
 PWM Mode Functions
     These 3 functions are used if you want to connect the Raspberry Pi to the Actuonix LAC via RC Connection
@@ -79,9 +84,21 @@ USB Mode Functions
 # This functions instantates p16 as an LAC object
 def setUSBmode():
     global p16
-    p16 = lac.LAC()
-    print("LAC setup")
-    p16.set_position(0)
+    lacStatus = False
+    
+    # Loop and Check every 30 seconds to see if LAC has been installed
+    while(lacStatus == False):
+        try:
+            # Initialize lac
+            p16 = lac.LAC()
+            p16.set_position(0)
+            lacStatus = True
+        except:
+            lacAudio.set_volume(100) # Set speaker volume to 100%
+            lacAudio.play_audio("Alert.wav")
+            lacAudio.play_message("No L.A.C. Detected!")
+            time.sleep(30) # Wait 30 seconds to try again
+    lacAudio.play_message("L.A.C. Setup")
 
 # This function allows for the user to change the LAC's derivative and proprotional gains
 def changeLACGains(proprotional_gain, derivative_gain):
