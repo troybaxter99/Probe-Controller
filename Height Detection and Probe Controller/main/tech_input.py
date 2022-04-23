@@ -188,7 +188,7 @@ def led_Status():
                     pass
                 
                 ''' Audio '''
-                techAudio.set_volume(100) # Set volume to 50%
+                techAudio.set_volume(15) # Set volume to 50%
                 techAudio.play_audio("button_press.wav")
                 
                 # Set debugMode to false and turn on yellow LED

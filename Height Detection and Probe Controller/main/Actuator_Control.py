@@ -81,6 +81,7 @@ def setUSBmode():
     global p16
     p16 = lac.LAC()
     print("LAC setup")
+    p16.set_position(0)
 
 # This function allows for the user to change the LAC's derivative and proprotional gains
 def changeLACGains(proprotional_gain, derivative_gain):
