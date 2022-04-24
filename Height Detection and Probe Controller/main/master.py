@@ -14,9 +14,7 @@ def main():
     # Set actuator position to 0 inches
     p16.setInstallPosition()
     
-    extraction = [None] * 2
-    start = [None] * 2
-    
+    # Default state to "Install"
     state = "Install"
     
     # Check Mode
@@ -27,9 +25,7 @@ def main():
         
         # Auto Mode
         if(state == "Auto"):
-#             if(start[1] == True):
-#                 print("Entering Distance Detection Mode")
-            
+            # Check to see if ToF Sensor is still connected. Catch Exception if No ToF Sensor is detected, and call error function
             errorPass = False
             while (errorPass == False):
                 try:
@@ -44,6 +40,7 @@ def main():
                     
                 except:
                     hd.error()
+                time.sleep(0.1)
              
             #print("Distance: %.2f in" % distCal)
             lacErrorPass = False
@@ -59,7 +56,7 @@ def main():
                     lacErrorPass = True
                 except:
                     p16.lacError()
-                    
+                time.sleep(0.1)
             
             if (tech.usbExists == True):
                 # Add Data to Telemetry
@@ -72,7 +69,7 @@ def main():
                 telemetry.logData(distCal, probe_pos, expected_actuator_len, actual_actuator_len)
         
         # Extraction Mode
-        if(state == "Install" and (previousState != state)): # If change in extraction mode condition
+        if(state == "Install" and (previousState != state)): # If change in Extraction Mode condition
             lacErrorPass = False
             while(lacErrorPass == False):
                 try:
@@ -81,6 +78,7 @@ def main():
                     lacErrorPass = True
                 except:
                     p16.lacError()
+                time.sleep(0.1)
                 
         elif(state == "Ready" and (previousState != state)): # If Extraction Mode is not enabled
             lacErrorPass = False
@@ -91,7 +89,9 @@ def main():
                     lacErrorPass = True
                 except:
                     p16.lacError()
-            
+                time.sleep(0.1)
+          
+        time.sleep(0.1) # Sleep for 10ms
     '''
     # Get Height Detection
     measure = hd.average_distance() # Measured in centimeters
