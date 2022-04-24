@@ -108,7 +108,7 @@ def set_state(buttons):
             currentState = "Ready"
             set_LED(currentState)
             print(currentState)
-            sound.set_volume(15) # Set Volume to 15%
+            sound.set_volume(25) # Set Volume to 25%
             sound.play_audio("button_press.wav")
     
     # Check Ready State
@@ -118,7 +118,7 @@ def set_state(buttons):
             currentState  = "Install"
             set_LED(currentState)
             print(currentState)
-            sound.set_volume(15) # Set Volume to 15%
+            sound.set_volume(25) # Set Volume to 25%
             sound.play_audio("button_press.wav")
             
             # Eject USB if USB has been written to
@@ -141,7 +141,7 @@ def set_state(buttons):
             currentState = "Idle"
             set_LED(currentState)
             print(currentState)
-            sound.set_volume(15) # Set Volume to 15%
+            sound.set_volume(25) # Set Volume to 25%
             sound.play_audio("button_press.wav")
     
     # Check Idle State
@@ -153,7 +153,7 @@ def set_state(buttons):
             telemetry.createFile(path) # Create Telemetry File
             currentState =  "Auto"
             usbExists = True
-            sound.set_volume(15) # Set Volume to 15%
+            sound.set_volume(40) # Set Volume to 40%
             sound.play_audio("startup.wav")
         
         # If USB is no detected
@@ -177,12 +177,12 @@ def set_state(buttons):
         if(buttons[1] == False and buttons[0] == True):
             currentState = "Auto"
             print(currentState)
-            sound.set_volume(15) # Set Volume to 15%
+            sound.set_volume(25) # Set Volume to 25%
             sound.play_audio("button_press.wav")
             
         # If current state has been changed from no USB to Auto, play startup audio
         if(currentState == "Auto"):
-            sound.set_volume(15) # Set volume to 15%
+            sound.set_volume(40) # Set volume to 40%
             sound.play_audio("startup.wav")
         
         set_LED(currentState)
@@ -194,8 +194,9 @@ def set_state(buttons):
             currentState = "Ready"
             set_LED(currentState)
             print(currentState)
-            sound.set_volume(15) # Set Volume to 15%
+            sound.set_volume(25) # Set Volume to 25%
             sound.play_audio("button_press.wav")
+            sound.set_volume(40) # Set Volume to 40%
             sound.play_audio("shutdown.wav")
             
     # Return currentState
