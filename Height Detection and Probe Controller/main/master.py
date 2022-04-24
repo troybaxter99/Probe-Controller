@@ -46,8 +46,20 @@ def main():
                     hd.error()
              
             #print("Distance: %.2f in" % distCal)
-            p16.setActuatorPosition(distCal)
+            lacErrorPass = False
             
+            # Try to set Actuator Position.
+            #     If actuator position cannot be set due to LAC getting disconnected,
+            #     whether inadvertently by the system or due to the battery dying,
+            #     reinitialize LAC.
+            #     Otherwise, set Actuator Position appropriately
+            while (lacErrorPass == False):
+                try:
+                    p16.setActuatorPosition(distCal)
+                    lacErrorPass = True
+                except:
+                    p16.lacError()
+                    
             
             if (tech.usbExists == True):
                 # Add Data to Telemetry
@@ -61,12 +73,24 @@ def main():
         
         # Extraction Mode
         if(state == "Install" and (previousState != state)): # If change in extraction mode condition
-            p16.setInstallPosition() # 0 inches
-            #print("Distance: 0 in")
+            lacErrorPass = False
+            while(lacErrorPass == False):
+                try:
+                    p16.setInstallPosition() # 0 inches
+                    #print("Distance: 0 in")
+                    lacErrorPass = True
+                except:
+                    p16.lacError()
                 
         elif(state == "Ready" and (previousState != state)): # If Extraction Mode is not enabled
-            p16.setReadyPosition() # 3 inches
-            #print("Distance: 3 in")
+            lacErrorPass = False
+            while(lacErrorPass == False):
+                try:
+                    p16.setReadyPosition() # 3 inches
+                    #print("Distance: 3 in")
+                    lacErrorPass = True
+                except:
+                    p16.lacError()
             
     '''
     # Get Height Detection

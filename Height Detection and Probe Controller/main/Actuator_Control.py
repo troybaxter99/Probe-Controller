@@ -75,7 +75,7 @@ def pwmOutput(distance):
     '''
 '''
 USB Mode Functions
-    These 4 functions are used if you want to connect your Raspberry Pi to the Actuonix LAC via USB Connection
+    These 5 functions are used if you want to connect your Raspberry Pi to the Actuonix LAC via USB Connection
     
     *** Check README.md for USB Setup
         Repository: https://github.com/troybaxter99/Probe-Controller ***
@@ -126,6 +126,32 @@ def getActualActuatorPosition():
     global p16
     distance = p16.get_feedback()
     return metric2in(distance)
+
+# This function serves as an error check for the LAC
+def lacError():
+    global p16
+    lacStatus = False
+    
+    checkValue = 200 # Number of checks to be performed before replaying Alert and LAC Error (~20 seconds of disconnect)
+    checkCounter = 0
+    
+    lacAudio.set_volume(100) # Set speaker volume to 100%
+    lacAudio.play_audio("Alert.wav")
+    lacAudio.play_message("L.A.C. Disconnected!")
+    
+    # Loop and Check every 30 seconds to see if LAC has been installed
+    while(lacStatus == False):
+        try:
+            # Initialize lac
+            p16 = lac.LAC()
+            lacStatus = True
+        except:
+            checkCounter = checkCounter + 1
+            if(checkCounter == checkValue):
+                lacAudio.play_audio("Alert.wav")
+                lacAudio.play_message("L.A.C. Disconnected!")
+            time.sleep(0.1)
+    lacAudio.play_message("L.A.C. Connected")    
 
 '''
 Direct Actuator Position Functions

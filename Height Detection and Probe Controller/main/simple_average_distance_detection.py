@@ -80,7 +80,7 @@ def calibration(dist):
 # Calibration based on Tested Average Offset Equation
 def calibration_avg(dist):
     offset = -0.0071 * dist**2 + 0.1914 * dist - 0.9006 # Calculates Offset in inches
-    print("Average Offset Equation: {0} in".format(offset))
+    # print("Average Offset Equation: {0} in".format(offset))
     
     calibrated = dist - offset
     
@@ -116,6 +116,8 @@ def main():
     print("\nCalibrated Range Average: {0} in".format(distance_in))
     print("Avg. Calibrated: {0} in". format(avg_cal_in))
 
+'''
 if __name__ == "__main__":
     init_dist()
     main()
+'''
