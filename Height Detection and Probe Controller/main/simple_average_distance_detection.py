@@ -47,7 +47,7 @@ def measure():
     global sensor
     
     dist = sensor.distance
-    print("Reading: {0} cm".format(dist))
+    # print("Reading: {0} cm".format(dist))
     
     # Return distance in cm
     return dist
@@ -71,7 +71,7 @@ def cm2in(dist):
 # Calibrated Equation based on most recent test
 def calibration(dist):
     offset = -0.0093 * dist**2 + 0.2093 * dist + 0.0523 # Calculates Offset in inches
-    print("Offset: {0} in".format(offset))
+    # print("Offset: {0} in".format(offset))
     
     calibrated = dist - offset
     
