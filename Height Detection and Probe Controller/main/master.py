@@ -3,6 +3,7 @@ import simple_average_distance_detection as hd
 import Actuator_Control as p16
 import tech_input as tech
 import telemetry_file as telemetry
+import time
 
 
 def main():
